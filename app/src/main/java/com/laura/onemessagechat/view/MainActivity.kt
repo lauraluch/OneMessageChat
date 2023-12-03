@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.laura.onemessagechat.R
@@ -101,4 +102,17 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.enterChatMi -> {
+                carl.launch(Intent(this,EnterChatActivity::class.java))
+                true
+            }
+            R.id.createChatMi -> {
+                carl.launch(Intent(this,ChatActivity::class.java))
+                true
+            }
+            else -> true
+        }
+    }
 }
