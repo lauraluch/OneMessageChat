@@ -30,6 +30,7 @@ class ChatActivity : AppCompatActivity() {
                     messageEt.isEnabled = false
                     saveBt.visibility = View.GONE
                 }
+                idTv.setText(_receivedChat.id)
                 messageEt.setText(_receivedChat.message)
 
             }
