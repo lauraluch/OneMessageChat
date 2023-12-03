@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.laura.onemessagechat.R
@@ -114,5 +118,34 @@ class MainActivity : AppCompatActivity() {
             }
             else -> true
         }
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        menuInflater.inflate(R.menu.context_menu_main, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val position = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
+        val chat = chatList[position]
+
+        return when (item.itemId){
+            R.id.editChatMi -> {
+                val chatToEdit = chatList[position]
+                val editChatIntent = Intent(this, ChatActivity::class.java)
+                editChatIntent.putExtra(EXTRA_CHAT, chatToEdit)
+                carl.launch(editChatIntent)
+                true
+            }
+            else -> {true}
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterForContextMenu(amb.chatsLv)
     }
 }
