@@ -30,7 +30,9 @@ class ChatActivity : AppCompatActivity() {
                     messageEt.isEnabled = false
                     saveBt.visibility = View.GONE
                 }
-                idTv.setText(_receivedChat.id.toString())
+                val generatedId = _receivedChat.id ?: generateId()
+                idTv.text = generatedId.toString()
+//                idTv.setText(_receivedChat.id.toString())
                 messageEt.setText(_receivedChat.message)
 
             }
@@ -41,7 +43,7 @@ class ChatActivity : AppCompatActivity() {
         with(cab) {
             saveBt.setOnClickListener {
                 val chat = Chat(
-                    id = receivedChat?.id?: generateId(),
+                    id = idTv.text.toString().toInt(),
                     message = messageEt.text.toString()
                 )
 
