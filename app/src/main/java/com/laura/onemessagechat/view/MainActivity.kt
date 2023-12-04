@@ -116,7 +116,6 @@ class MainActivity : AppCompatActivity() {
 
                     chatController.getChat(chatId, object : ChatRoomController.OnChatFoundListener {
                         override fun onChatFound(chat: Chat) {
-//                            println("Achou: $chat")
                             chatsYouParticipate.add(chat)
                             Log.d("Lista: ", chatsYouParticipate.toString())
                             chatAdapter.notifyDataSetChanged()
@@ -173,7 +172,7 @@ class MainActivity : AppCompatActivity() {
 
         return when (item.itemId){
             R.id.editChatMi -> {
-                val chatToEdit = chatList[position]
+                val chatToEdit = chatsYouParticipate[position]
                 val editChatIntent = Intent(this, ChatActivity::class.java)
                 editChatIntent.putExtra(EXTRA_CHAT, chatToEdit)
                 carl.launch(editChatIntent)
