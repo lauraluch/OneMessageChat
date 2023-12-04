@@ -2,6 +2,7 @@ package com.laura.onemessagechat.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.laura.onemessagechat.databinding.ChatActivityBinding
@@ -32,7 +33,6 @@ class ChatActivity : AppCompatActivity() {
                 }
                 val generatedId = _receivedChat.id ?: generateId()
                 idTv.text = generatedId.toString()
-//                idTv.setText(_receivedChat.id.toString())
                 messageEt.setText(_receivedChat.message)
 
             }
@@ -41,11 +41,18 @@ class ChatActivity : AppCompatActivity() {
         }
 
         with(cab) {
+            val chatId = receivedChat?.id ?: generateId()
+            Log.d("chatId", chatId.toString())
+            idTv.text = chatId.toString()
+
             saveBt.setOnClickListener {
+
                 val chat = Chat(
-                    id = idTv.text.toString().toInt(),
+                    id = chatId,
                     message = messageEt.text.toString()
                 )
+
+                // Now, you can send the chat object or chatId to your database
 
                 val resultIntent = Intent()
                 resultIntent.putExtra(EXTRA_CHAT, chat)
