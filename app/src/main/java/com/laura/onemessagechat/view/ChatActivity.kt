@@ -28,11 +28,12 @@ class ChatActivity : AppCompatActivity() {
             val viewChat: Boolean = intent.getBooleanExtra(VIEW_CHAT, false)
             with(cab) {
                 if (viewChat) {
+                    idEt.isEnabled = false
                     messageEt.isEnabled = false
                     saveBt.visibility = View.GONE
                 }
-                val generatedId = _receivedChat.id ?: generateId()
-                idTv.text = generatedId.toString()
+
+                idEt.setText(_receivedChat.id)
                 messageEt.setText(_receivedChat.message)
 
             }
@@ -41,14 +42,9 @@ class ChatActivity : AppCompatActivity() {
         }
 
         with(cab) {
-            val chatId = receivedChat?.id ?: generateId()
-            Log.d("chatId", chatId.toString())
-            idTv.text = chatId.toString()
-
             saveBt.setOnClickListener {
-
                 val chat = Chat(
-                    id = chatId,
+                    id = idEt.text.toString(),
                     message = messageEt.text.toString()
                 )
 
@@ -60,5 +56,4 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun generateId() = Random(System.currentTimeMillis()).nextInt()
 }

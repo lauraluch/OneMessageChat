@@ -21,7 +21,7 @@ interface ChatRoomDao {
     fun createChat(chat: Chat)
 
     @Query("SELECT *FROM $CHAT_TABLE WHERE $ID_COLUMN = :id")
-    fun readChat(id: Int): Chat?
+    fun readChat(id: String): Chat?
     
     @Query("SELECT * FROM $CHAT_TABLE ORDER BY $MESSAGE_COLUMN")
     fun readAllChats(): MutableList<Chat>

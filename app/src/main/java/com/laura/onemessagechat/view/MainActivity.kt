@@ -112,9 +112,8 @@ class MainActivity : AppCompatActivity() {
 
             if (chatIdText.isNotEmpty()) {
                 try {
-                    val chatId = chatIdText.toInt()
 
-                    chatController.getChat(chatId, object : ChatRoomController.OnChatFoundListener {
+                    chatController.getChat(chatIdText, object : ChatRoomController.OnChatFoundListener {
                         override fun onChatFound(chat: Chat) {
                             chatsYouParticipate.add(chat)
                             Log.d("Lista: ", chatsYouParticipate.toString())

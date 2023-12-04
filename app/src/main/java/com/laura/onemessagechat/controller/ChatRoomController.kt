@@ -31,7 +31,7 @@ class ChatRoomController(private val mainActivity: MainActivity) {
         fun onChatNotFound()
     }
 
-    fun getChat(id: Int, callback: OnChatFoundListener) {
+    fun getChat(id: String, callback: OnChatFoundListener) {
         Thread {
             val chat = chatDaoImpl.readChat(id)
             mainActivity.runOnUiThread {
