@@ -52,8 +52,6 @@ class ChatActivity : AppCompatActivity() {
                     message = messageEt.text.toString()
                 )
 
-                // Now, you can send the chat object or chatId to your database
-
                 val resultIntent = Intent()
                 resultIntent.putExtra(EXTRA_CHAT, chat)
                 setResult(RESULT_OK, resultIntent)

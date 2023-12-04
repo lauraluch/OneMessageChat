@@ -38,7 +38,7 @@
                 android:layout_marginBottom="6dp"
                 />
             <EditText
-                android:id="@+id/editTextCode"
+                android:id="@+id/enterChatEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Digite o código"

@@ -23,6 +23,7 @@ import com.laura.onemessagechat.model.Constants.CHAT_ARRAY
 import com.laura.onemessagechat.model.Constants.EXTRA_CHAT
 import com.laura.onemessagechat.model.Constants.VIEW_CHAT
 import kotlinx.android.parcel.Parcelize
+import java.lang.NumberFormatException
 
 class MainActivity : AppCompatActivity() {
     //ViewBinding
@@ -103,6 +104,34 @@ class MainActivity : AppCompatActivity() {
                 GET_CHATS_INTERVAL
             )
         }
+
+        amb.enterChatBt.setOnClickListener {
+            val chatIdText = amb.enterChatEt.text.toString().trim()
+
+            if (chatIdText.isNotEmpty()) {
+                try {
+                    val chatId = chatIdText.toInt()
+
+                    chatController.getChat(chatId, object : ChatRoomController.OnChatFoundListener {
+                        override fun onChatFound(chat: Chat) {
+                            println("Achou: $chat")
+                        }
+
+                        override fun onChatNotFound() {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Chat não encontrado. Insira outro valor", Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
+                } catch (e: NumberFormatException) {
+                    Toast.makeText(this, "Número muito grande. Insira outro valor", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Digite o código do chat", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         chatController.getAllChats()
     }
 
