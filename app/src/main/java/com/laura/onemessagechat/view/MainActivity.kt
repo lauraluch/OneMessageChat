@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.laura.onemessagechat.R
 import com.laura.onemessagechat.adapter.ChatAdapter
+import com.laura.onemessagechat.controller.ChatRoomController
 import com.laura.onemessagechat.databinding.ActivityMainBinding
 import com.laura.onemessagechat.model.Chat
 import com.laura.onemessagechat.model.Constants.CHAT_ARRAY
@@ -38,6 +39,9 @@ class MainActivity : AppCompatActivity() {
             chatList
         )
     }
+    private val chatController: ChatRoomController by lazy {
+        ChatRoomController(this)
+    }
 
     companion object {
         const val GET_CHATS_MSG = 1
@@ -46,8 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     val updateChatListHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            msg.data.getParcelableArray(CHAT_ARRAY)?.also { chatArray ->
+                msg.data.getParcelableArray(CHAT_ARRAY)?.also { chatArray ->
 
                 chatList.clear()
                 chatArray.forEach {
@@ -56,6 +59,7 @@ class MainActivity : AppCompatActivity() {
 
                 chatAdapter.notifyDataSetChanged()
             }
+
         }
     }
 
@@ -75,9 +79,9 @@ class MainActivity : AppCompatActivity() {
                 val chat = result.data?.getParcelableExtra<Chat>(EXTRA_CHAT)
                 chat?.let { _chat ->
                     if(chatList.any { it.id == chat.id }){
-//                        chatController.editChat(_contact)
+                        chatController.editChat(_chat)
                     }else {
-//                        chatController.insertChat(_chat)
+                        chatController.insertChat(_chat)
                     }
                 }
             }
@@ -99,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                 GET_CHATS_INTERVAL
             )
         }
+        chatController.getAllChats()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -130,7 +135,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
-        val chat = chatList[position]
 
         return when (item.itemId){
             R.id.editChatMi -> {

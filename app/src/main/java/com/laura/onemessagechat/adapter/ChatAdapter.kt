@@ -32,7 +32,7 @@ class ChatAdapter(
         }
 
         val holder = chatTileView.tag as TileChatHolder
-        holder.idTv.setText(chat.id)
+        holder.idTv.setText(chat.id.toString())
         holder.messageTv.setText(chat.message)
 
 
