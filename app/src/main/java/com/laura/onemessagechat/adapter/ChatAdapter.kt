@@ -2,6 +2,7 @@ package com.laura.onemessagechat.adapter
 
 import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,8 +34,9 @@ class ChatAdapter(
 
         val holder = chatTileView.tag as TileChatHolder
         holder.idTv.setText(chat.id.toString())
+        holder.messageTv.maxLines = 1
+        holder.messageTv.ellipsize = TextUtils.TruncateAt.END
         holder.messageTv.setText(chat.message)
-
 
         return chatTileView
     }
