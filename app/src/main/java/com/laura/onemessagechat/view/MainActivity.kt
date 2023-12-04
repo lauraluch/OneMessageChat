@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
@@ -33,11 +34,12 @@ class MainActivity : AppCompatActivity() {
 
     //Data Source
     private val chatList: MutableList<Chat> = mutableListOf()
+    private val chatsYouParticipate: MutableList<Chat> = mutableListOf()
 
     private val chatAdapter: ChatAdapter by lazy {
         ChatAdapter(
             this,
-            chatList
+            chatsYouParticipate
         )
     }
     private val chatController: ChatRoomController by lazy {
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         amb.chatsLv.setOnItemClickListener{ parent, view, position, id->
-            val chat = chatList[position]
+            val chat = chatsYouParticipate[position]
             val viewChatIntent = Intent(this, ChatActivity::class.java)
                 .putExtra(EXTRA_CHAT, chat)
                 .putExtra(VIEW_CHAT,true)
@@ -114,7 +116,10 @@ class MainActivity : AppCompatActivity() {
 
                     chatController.getChat(chatId, object : ChatRoomController.OnChatFoundListener {
                         override fun onChatFound(chat: Chat) {
-                            println("Achou: $chat")
+//                            println("Achou: $chat")
+                            chatsYouParticipate.add(chat)
+                            Log.d("Lista: ", chatsYouParticipate.toString())
+                            chatAdapter.notifyDataSetChanged()
                         }
 
                         override fun onChatNotFound() {
@@ -132,7 +137,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        chatController.getAllChats()
+        chatsYouParticipate
+//        chatController.getAllChats()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
