@@ -56,14 +56,13 @@ class MainActivity : AppCompatActivity() {
     val updateChatListHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
                 msg.data.getParcelableArray(CHAT_ARRAY)?.also { chatArray ->
+                    chatList.clear()
+                    chatArray.forEach {
+                        chatList.add(it as Chat)
+                    }
 
-                chatList.clear()
-                chatArray.forEach {
-                    chatList.add(it as Chat)
+                    chatAdapter.notifyDataSetChanged()
                 }
-
-                chatAdapter.notifyDataSetChanged()
-            }
 
         }
     }
@@ -116,9 +115,17 @@ class MainActivity : AppCompatActivity() {
                 try {
                     chatController.getChat(chatIdText, object : ChatRtDbFbController.OnChatFoundListener {
                         override fun onChatFound(chat: Chat) {
-                            chatsYouParticipate.add(chat)
-                            Log.d("Lista: ", chatsYouParticipate.toString())
-                            chatAdapter.notifyDataSetChanged()
+                            if (!chatsYouParticipate.any { it.id == chat.id }) {
+                                chatsYouParticipate.add(chat)
+                                Log.d("Lista: ", chatsYouParticipate.toString())
+                                chatAdapter.notifyDataSetChanged()
+                            } else {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Você já está nessa conversa.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
 
                         override fun onChatNotFound() {

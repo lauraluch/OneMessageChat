@@ -51,6 +51,7 @@ class ChatActivity : AppCompatActivity() {
                 val resultIntent = Intent()
                 resultIntent.putExtra(EXTRA_CHAT, chat)
                 setResult(RESULT_OK, resultIntent)
+
                 finish()
             }
         }
