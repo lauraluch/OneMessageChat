@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "805703028972",
+    "project_id": "onemessagechat-2790b",
+    "storage_bucket": "onemessagechat-2790b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805703028972:android:327859383074bc49d895c9",
+        "android_client_info": {
+          "package_name": "com.laura.onemessagechat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADhLPWmzzLxIuVtveFxCvUJL-cw8pdgw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
