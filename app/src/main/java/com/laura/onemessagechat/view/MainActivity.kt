@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.laura.onemessagechat.R
 import com.laura.onemessagechat.adapter.ChatAdapter
 import com.laura.onemessagechat.controller.ChatRoomController
+import com.laura.onemessagechat.controller.ChatRtDbFbController
 import com.laura.onemessagechat.databinding.ActivityMainBinding
 import com.laura.onemessagechat.model.Chat
 import com.laura.onemessagechat.model.Constants.CHAT_ARRAY
@@ -42,8 +43,9 @@ class MainActivity : AppCompatActivity() {
             chatsYouParticipate
         )
     }
-    private val chatController: ChatRoomController by lazy {
-        ChatRoomController(this)
+
+    private val chatController: ChatRtDbFbController by lazy {
+        ChatRtDbFbController(this)
     }
 
     companion object {
@@ -112,8 +114,7 @@ class MainActivity : AppCompatActivity() {
 
             if (chatIdText.isNotEmpty()) {
                 try {
-
-                    chatController.getChat(chatIdText, object : ChatRoomController.OnChatFoundListener {
+                    chatController.getChat(chatIdText, object : ChatRtDbFbController.OnChatFoundListener {
                         override fun onChatFound(chat: Chat) {
                             chatsYouParticipate.add(chat)
                             Log.d("Lista: ", chatsYouParticipate.toString())

@@ -16,7 +16,24 @@ class ChatRtDbFbController(private val mainActivity: MainActivity) {
         }.start()
     }
 
-    fun getChat(id: String) = chatDaoImpl.readChat(id)
+//    fun getChat(id: String) = chatDaoImpl.readChat(id)
+    interface OnChatFoundListener {
+        fun onChatFound(chat: Chat)
+        fun onChatNotFound()
+    }
+
+    fun getChat(id: String, callback: OnChatFoundListener) {
+        Thread {
+            val chat = chatDaoImpl.readChat(id)
+            mainActivity.runOnUiThread {
+                if (chat != null) {
+                    callback.onChatFound(chat)
+                } else {
+                    callback.onChatNotFound()
+                }
+            }
+        }.start()
+    }
 
     fun getChats() {
         Thread {

@@ -80,8 +80,14 @@ class ChatDaoRtDbFb: ChatDao {
     }
 
     override fun readChat(id: String): Chat? {
-        return chatList[chatList.indexOfFirst { it.id == id }]
+        val index = chatList.indexOfFirst { it.id == id }
+        return if (index != -1) {
+            chatList[index]
+        } else {
+            null
+        }
     }
+
 
     override fun readAllChats(): MutableList<Chat> = chatList
 
