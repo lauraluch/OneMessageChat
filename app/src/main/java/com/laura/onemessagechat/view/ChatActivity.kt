@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.laura.onemessagechat.databinding.ChatActivityBinding
 import com.laura.onemessagechat.model.Chat
@@ -43,16 +44,35 @@ class ChatActivity : AppCompatActivity() {
 
         with(cab) {
             saveBt.setOnClickListener {
-                val chat = Chat(
-                    id = idEt.text.toString(),
-                    message = messageEt.text.toString()
-                )
+                if (idEt.text.isEmpty()) {
+                    Toast.makeText(
+                        this@ChatActivity,
+                        "O ID não pode ser vazio.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                if (messageEt.text.isEmpty()) {
+                    Toast.makeText(
+                        this@ChatActivity,
+                        "A mensagem não pode ser vazia.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                else {
+                    val chat = Chat(
+                        id = idEt.text.toString(),
+                        message = messageEt.text.toString()
+                    )
 
-                val resultIntent = Intent()
-                resultIntent.putExtra(EXTRA_CHAT, chat)
-                setResult(RESULT_OK, resultIntent)
+                    val resultIntent = Intent()
+                    resultIntent.putExtra(EXTRA_CHAT, chat)
+                    setResult(RESULT_OK, resultIntent)
 
-                finish()
+                    finish()
+                }
+
             }
         }
     }
