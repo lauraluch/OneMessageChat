@@ -156,6 +156,10 @@ class MainActivity : AppCompatActivity() {
                 carl.launch(Intent(this,ChatActivity::class.java))
                 true
             }
+            R.id.exitApp -> {
+                finishAffinity()
+                true
+            }
             else -> true
         }
     }
