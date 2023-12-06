@@ -55,14 +55,14 @@ class MainActivity : AppCompatActivity() {
 
     val updateChatListHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-                msg.data.getParcelableArray(CHAT_ARRAY)?.also { chatArray ->
-                    chatList.clear()
-                    chatArray.forEach {
-                        chatList.add(it as Chat)
-                    }
-
-                    chatAdapter.notifyDataSetChanged()
+            msg.data.getParcelableArray(CHAT_ARRAY)?.also { chatArray ->
+                chatsYouParticipate.clear()
+                chatArray.forEach {
+                    chatsYouParticipate.add(it as Chat)
                 }
+
+                chatAdapter.notifyDataSetChanged()
+            }
 
         }
     }
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK){
                 val chat = result.data?.getParcelableExtra<Chat>(EXTRA_CHAT)
                 chat?.let { _chat ->
-                    if(chatList.any { it.id == chat.id }){
+                    if(chatsYouParticipate.any { it.id == chat.id }){
                         chatController.editChat(_chat)
                     }else {
                         chatController.insertChat(_chat)
@@ -92,12 +92,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         amb.chatsLv.setOnItemClickListener{ parent, view, position, id->
-            val chat = chatsYouParticipate[position]
-            val viewChatIntent = Intent(this, ChatActivity::class.java)
-                .putExtra(EXTRA_CHAT, chat)
-                .putExtra(VIEW_CHAT,true)
-
-            startActivity(viewChatIntent)
+            val chatToEdit = chatsYouParticipate[position]
+            val editChatIntent = Intent(this, ChatActivity::class.java)
+            editChatIntent.putExtra(EXTRA_CHAT, chatToEdit)
+            carl.launch(editChatIntent)
+            true
         }
 
         registerForContextMenu(amb.chatsLv)
@@ -117,7 +116,6 @@ class MainActivity : AppCompatActivity() {
                         override fun onChatFound(chat: Chat) {
                             if (!chatsYouParticipate.any { it.id == chat.id }) {
                                 chatsYouParticipate.add(chat)
-                                Log.d("Lista: ", chatsYouParticipate.toString())
                                 chatAdapter.notifyDataSetChanged()
                             } else {
                                 Toast.makeText(
@@ -154,38 +152,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
-            R.id.enterChatMi -> {
-                carl.launch(Intent(this,EnterChatActivity::class.java))
-                true
-            }
             R.id.createChatMi -> {
                 carl.launch(Intent(this,ChatActivity::class.java))
                 true
             }
             else -> true
-        }
-    }
-
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        menuInflater.inflate(R.menu.context_menu_main, menu)
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        val position = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
-
-        return when (item.itemId){
-            R.id.editChatMi -> {
-                val chatToEdit = chatsYouParticipate[position]
-                val editChatIntent = Intent(this, ChatActivity::class.java)
-                editChatIntent.putExtra(EXTRA_CHAT, chatToEdit)
-                carl.launch(editChatIntent)
-                true
-            }
-            else -> {true}
         }
     }
 
